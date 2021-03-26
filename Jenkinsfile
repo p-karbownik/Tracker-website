@@ -7,7 +7,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nexus:8081"
-        NEXUS_REPOSITORY = "npm-private"
+        NEXUS_REPOSITORY = "npm-group"
         NEXUS_CREDENTIAL = "nexus-user-credentials"
     }
     
@@ -34,7 +34,7 @@ pipeline {
         {
             steps {
                 sh "echo registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY} > .npmrc"
-                sh "echo -n _authToken= >> .npmrc"
+                sh "echo -n _auth= >> .npmrc"
                 sh "echo -n '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64 >> .npmrc"
                 sh 'npm publish'
                 sh 'rm .npmrc'
