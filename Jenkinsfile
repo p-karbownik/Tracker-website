@@ -7,7 +7,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nexus:8081"
-        NEXUS_REPOSITORY = "npm-snapshots"
+        NEXUS_REPOSITORY = "npm-private"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
     }
     
