@@ -38,7 +38,7 @@ pipeline {
                 sh "echo '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64 >> .npmrc"
                 sh "echo email = blackbirdcu@gmail.com >> .npmrc"
                 sh "echo always-auth = true >> .npmrc"
-                sh 'npm publish'
+                sh "npm publish --registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}"
                 sh 'rm .npmrc'
             }
         }
