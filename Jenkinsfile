@@ -33,12 +33,12 @@ pipeline {
         stage('Publish to Nexus Repository Manager')
         {
             steps {
-                sh 'echo registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/ > .npmrc'
-                sh 'echo -n _auth= >> .npmrc'
-                sh 'echo '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64 >> .npmrc'
-                sh 'echo email = blackbirdcu@gmail.com >> .npmrc'
-                sh 'echo always-auth = true >> .npmrc'
-                sh 'npm publish --registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/'
+                sh "echo registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/ > .npmrc"
+                sh "echo -n _auth= >> .npmrc"
+                sh "echo '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64 >> .npmrc"
+                sh "echo email = blackbirdcu@gmail.com >> .npmrc"
+                sh "echo always-auth = true >> .npmrc"
+                sh "npm publish --registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/"
                 sh 'rm .npmrc'
             }
         }
