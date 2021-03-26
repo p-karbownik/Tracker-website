@@ -8,7 +8,7 @@ pipeline {
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nexus:8081"
         NEXUS_REPOSITORY = "npm-private"
-        NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
+        NEXUS_CREDENTIAL = "nexus-user-credentials"
     }
     
     stages {
@@ -33,13 +33,10 @@ pipeline {
         stage('Publish to Nexus Repository Manager')
         {
             steps {
-                withCredentials([string(
-                        credentialsId: "nexus-user-credentials",
-                        variable: 'NEXUS_CREDENTIAL_ID')]) {
-                    sh "echo registry=http://nexus:8081/repository/npm-group:_authToken=${env.NEXUS_CREDENTIAL_ID} > .npmrc"
-                    sh 'npm publish'
-                    sh 'rm .npmrc'
-                }
+                sh "echo registry=${env.NEXUS_PROTOCOL}://${end.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY} _authToken= > .npmrc"
+                sh "echo -n '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64 >> .npmrc"
+                sh 'npm publish'
+                sh 'rm .npmrc'
             }
         }
     }
