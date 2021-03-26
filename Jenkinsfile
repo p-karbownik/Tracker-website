@@ -32,12 +32,14 @@ pipeline {
         }
         stage('Publish to Nexus Repository Manager')
         {
-            withCredentials([string(
-                    credentialsId: "nexus-user-credentials",
-                    variable: 'NEXUS_CREDENTIAL_ID')]) {
-                sh "echo registry=http://nexus:8081/repository/npm-group:_authToken=${env.NEXUS_CREDENTIAL_ID} > .npmrc"
-                sh 'npm publish'
-                sh 'rm .npmrc'
+            steps {
+                withCredentials([string(
+                        credentialsId: "nexus-user-credentials",
+                        variable: 'NEXUS_CREDENTIAL_ID')]) {
+                    sh "echo registry=http://nexus:8081/repository/npm-group:_authToken=${env.NEXUS_CREDENTIAL_ID} > .npmrc"
+                    sh 'npm publish'
+                    sh 'rm .npmrc'
+                }
             }
         }
     }
