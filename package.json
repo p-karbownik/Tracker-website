@@ -2,7 +2,7 @@
   "name": "tracker-website",
   "version": "0.1.0",
   "publishConfig": {
-    "registry": "http://nexus:8081/repository/npm-private/"
+    "registry": "http://localhost:8081/repository/npm-private"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
