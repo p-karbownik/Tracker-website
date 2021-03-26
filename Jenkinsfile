@@ -14,6 +14,11 @@ pipeline {
     stages {
         stage('Install') { 
             steps {
+                sh "npm config set _auth $(echo -n '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64)"
+                sh "npm config set email blackbirdcu@gmail.com"
+                sh "npm config set registry ${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/"
+                sh "npm config set always-auth true"
+                sh "npm config set strict-ssl true"
                 sh 'npm install' 
             }
         }
@@ -33,13 +38,7 @@ pipeline {
         stage('Publish to Nexus Repository Manager')
         {
             steps {
-                sh "echo registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/ > .npmrc"
-                sh "echo email = blackbirdcu@gmail.com >> .npmrc"
-                sh "echo always-auth = true >> .npmrc"
-                sh "echo -n _auth= >> .npmrc"
-                sh "echo '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64 >> .npmrc"
                 sh "npm publish --registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/"
-                sh 'rm .npmrc'
             }
         }
     }
