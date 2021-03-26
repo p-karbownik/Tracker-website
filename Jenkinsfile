@@ -33,7 +33,8 @@ pipeline {
         stage('Publish to Nexus Repository Manager')
         {
             steps {
-                sh "echo registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY} _authToken= > .npmrc"
+                sh "echo registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY} > .npmrc"
+                sh "echo -n _authToken= >> .npmrc"
                 sh "echo -n '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64 >> .npmrc"
                 sh 'npm publish'
                 sh 'rm .npmrc'
