@@ -8,13 +8,13 @@ pipeline {
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nexus:8081"
         NEXUS_REPOSITORY = "npm-private"
-        NEXUS_CREDENTIAL = "nexus-user-credentials"
+        NEXUS_CREDENTIAL = "nexus_token"
     }
     
     stages {
         stage('Install') { 
             steps {
-                sh "npm config set _auth `echo -n '${env.NEXUS_CREDENTIAL_USR}:${env.NEXUS_CREDENTIAL_PSW}' | openssl base64`"
+                sh "npm config set _auth ${NEXUS_CREDENTIAL}"
                 sh "npm config set email blackbirdcu@gmail.com"
                 sh "npm config set registry ${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/"
                 sh "npm config set always-auth true"
