@@ -8,13 +8,13 @@ pipeline {
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "nexus:8081"
         NEXUS_REPOSITORY = "npm-group"
-        NEXUS_CREDENTIAL_ID = "nexus_token"
+        NEXUS_CREDENTIAL_ID = credentials('nexus_token')
     }
     
     stages {
         stage('Install') { 
             steps {
-                sh "npm config set _auth credentials(${NEXUS_CREDENTIAL_ID})"
+                sh "npm config set _auth ${NEXUS_CREDENTIAL_ID}"
                 sh "npm config set email blackbirdcu@gmail.com"
                 sh "npm config set registry ${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/"
                 sh "npm config set always-auth true"
