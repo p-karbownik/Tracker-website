@@ -9,6 +9,7 @@ pipeline {
         NEXUS_URL = "nexus:8081"
         NEXUS_REPOSITORY = "npm-group"
         NEXUS_CREDENTIAL_ID = credentials('nexus_token')
+        CI = 'true'
     }
     
     stages {
@@ -41,6 +42,12 @@ pipeline {
         {
             steps {
                 sh "npm publish --registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/"
+            }
+        }
+        stage('Deploy') {
+            steps {
+               sh "heroku container:push web -a tracker-website"
+               sh "heroku container:release web -a tracker-website"
             }
         }
     }
