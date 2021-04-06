@@ -46,8 +46,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-               sh "heroku container:push web -a tracker-website"
-               sh "heroku container:release web -a tracker-website"
+               sh "heroku container:push web -a activity-tracker-website"
+               sh "heroku container:release web -a activity-tracker-website"
             }
         }
     }
