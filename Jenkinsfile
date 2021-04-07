@@ -1,4 +1,4 @@
-pipeline {
+gitpipeline {
     agent any
     
     tools {nodejs "node"}
@@ -34,7 +34,7 @@ pipeline {
         stage('Tests')
         {
             steps {
-                sh 'npm test -- --watchAll=false'
+                sh 'npm test -- --coverage --watchAll=false'
             }
         }
         stage('Publish to Nexus Repository Manager')
