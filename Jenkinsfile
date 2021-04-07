@@ -1,4 +1,4 @@
-gitpipeline {
+pipeline {
     agent any
     
     tools {nodejs "node"}
