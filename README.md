@@ -1,6 +1,7 @@
 Uruchomienie projektu lokalnie:
 - zbudowanie projektu: npm install
 - uruchomienie testów: npm test
+- uruchomienie testów z pokryciem kodu: npm test -- --coverage --watchAll=false
 - uruchomienie projektu: npm start (projekt wstaje na porcie 3000)
 
 Uruchomienie projektu przy użyciu Dockera (wymagany zainstalowany Docker):
