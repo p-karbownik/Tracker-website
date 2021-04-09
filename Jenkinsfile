@@ -9,6 +9,7 @@ pipeline {
         NEXUS_URL = "nexus:8081"
         NEXUS_REPOSITORY = "npm-group"
         NEXUS_CREDENTIAL_ID = credentials('nexus_token')
+        CI = 'true'
     }
     
     stages {
@@ -34,7 +35,7 @@ pipeline {
         stage('Tests')
         {
             steps {
-                sh 'npm test -- --coverage --watchAll=false'
+                sh 'npm test -- --coverage'
             }
         }
         stage('Publish to Nexus Repository Manager')
