@@ -34,7 +34,7 @@ pipeline {
         stage('Tests')
         {
             steps {
-                sh 'npm test -- --coverage --watchAll=false'
+                sh 'npm test -- --coverage'
             }
         }
         stage('Publish to Nexus Repository Manager')
