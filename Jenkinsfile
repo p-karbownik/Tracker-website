@@ -44,5 +44,11 @@ pipeline {
                 sh "npm publish --registry=${env.NEXUS_PROTOCOL}://${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/"
             }
         }
+        stage('Deploy') {
+            steps {
+               sh "heroku container:push web -a activity-tracker-website"
+               sh "heroku container:release web -a activity-tracker-website"
+            }
+        }
     }
 }
