@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import LoginComponent from "./login.component"
+import RegisterComponent from "./register.component"
 
 function App() {
   return (<Router>
@@ -10,7 +11,8 @@ function App() {
         <div className="inner">
           <Switch>
             <Route exact path='/' component={LoginComponent} />
-            <Route path="/sign-in" component={LoginComponent} />
+            <Route path="/register" component={RegisterComponent} />
+            <Route path="/login" component={LoginComponent} />
           </Switch>
         </div>
       </div>
