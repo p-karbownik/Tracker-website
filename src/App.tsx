@@ -3,6 +3,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import LoginComponent from "./login.component"
 import RegisterComponent from "./register.component"
+import DashboardComponent from "./dashboard.component"
 
 function App() {
   return (<Router>
@@ -10,7 +11,7 @@ function App() {
       <div className="outer">
         <div className="inner">
           <Switch>
-            <Route exact path='/' component={LoginComponent} />
+            <Route exact path='/' component={DashboardComponent} />
             <Route path="/register" component={RegisterComponent} />
             <Route path="/login" component={LoginComponent} />
           </Switch>
