@@ -11,7 +11,7 @@ function App() {
       <div className="outer">
         <div className="inner">
           <Switch>
-            <Route exact path='/' component={DashboardComponent} />
+            <Route exact path='/' component={LoginComponent} />
             <Route path="/register" component={RegisterComponent} />
             <Route path="/login" component={LoginComponent} />
           </Switch>
