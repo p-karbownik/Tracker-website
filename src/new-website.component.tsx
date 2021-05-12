@@ -1,9 +1,9 @@
-import './index.css';
+import './form.css';
 import { Component } from "react";
 export default class NewWebsiteComponent extends Component {
     render() {
         return (
-            <form action = "/new-website">
+            <form className = "formClass" action = "/new-website">
                 <h3>New website</h3>
                 <div className="form-group">
                     <label>Website name</label>
