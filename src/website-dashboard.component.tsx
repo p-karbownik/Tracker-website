@@ -1,3 +1,4 @@
+import './index.css'
 import './website-dashboard.component.css';
 import React, { Component } from "react";
 import { Line } from "react-chartjs-2"
@@ -20,10 +21,6 @@ export default class WebsiteDashboardComponent extends Component {
                 <h3>Dashboard</h3>
                 <div>
                     <Grid container spacing={1} direction="row" alignItems="stretch">
-                        {EventData.map((element) => <Grid item> <Card> < Line type="line" data={element} /> </Card> </Grid>)}
-                        {EventData.map((element) => <Grid item> <Card> < Line type="line" data={element} /> </Card> </Grid>)}
-                        {EventData.map((element) => <Grid item> <Card> < Line type="line" data={element} /> </Card> </Grid>)}
-                        {EventData.map((element) => <Grid item> <Card> < Line type="line" data={element} /> </Card> </Grid>)}
                         {EventData.map((element) => <Grid item> <Card> < Line type="line" data={element} /> </Card> </Grid>)}
                     </Grid>
                 </div> 
