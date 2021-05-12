@@ -19,8 +19,7 @@ export default class WebsiteDashboardComponent extends Component {
     render() {
         window.ResizeObserver = ResizeObserver;
         return (
-            <div>
-                
+            <div className="dashboard">                
                 <div>
                     <Grid container spacing={6} direction="row" alignItems="stretch">
                         <Grid item>
