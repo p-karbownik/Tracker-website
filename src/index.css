@@ -20,7 +20,7 @@
   .outer {
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
     text-align: left;
   }
   
