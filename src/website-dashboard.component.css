@@ -1,0 +1,15 @@
+
+  .dashboard {
+    width: auto;
+    /* margin-left: 55px;
+    margin-top: 55px;
+    margin-right: 55px; */
+    border: 2px solid #222;
+    background: #bdd3b6;
+  }
+
+  button {
+    background: transparent;
+    border: 0;
+  }
+  
