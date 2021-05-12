@@ -6,7 +6,7 @@ import { Component } from "react";
 export default class LoginComponent extends Component {
     render() {
         return (
-            <form className = "formClass" action = "/dashboard">
+            <form className = "formClass" action = "/mainPage">
                 <h3>Log in</h3>
                 <div className="form-group">
                     <label>Email</label>

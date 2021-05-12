@@ -14,7 +14,7 @@ class ResizeObserver {
     disconnect() {}
 }
 
-export default class WebsiteDashboardComponent extends Component {
+export default class Dashboard extends Component {
 
     render() {
         window.ResizeObserver = ResizeObserver;
@@ -23,7 +23,7 @@ export default class WebsiteDashboardComponent extends Component {
                 <div>
                     <Grid container spacing={6} direction="row" alignItems="stretch">
                         <Grid item>
-                            <Link to="./login"><ArrowBackIosIcon></ArrowBackIosIcon> </Link>
+                            <Link to="./mainPage"><ArrowBackIosIcon></ArrowBackIosIcon> </Link>
                         </Grid>
                         <Grid item>
                             <h3>Dashboard</h3>

@@ -5,7 +5,7 @@ import { Component } from "react";
 
 import { Link } from "react-router-dom";
 import websites from './website';
-import './dashboard.component.css'
+import './main-page.component.css'
 
 const columns = [
     {
@@ -30,7 +30,7 @@ const columns = [
       },
       {
         name: "",
-        cell: (row: any) => <Link to="/websitePage"  >See more</Link>
+        cell: (row: any) => <Link to="/dashboard"  >See more</Link>
         
       }
 
@@ -38,12 +38,15 @@ const columns = [
   
   
   
-export default class Dashboard extends Component {
+export default class MainPage extends Component {
     
     render() {
         return (
             <div className = "table">
-            
+            <form action="/newWebsite">
+                <button className = "websiteButton">Add new website</button>
+            </form>
+            <br></br>
             <Card>
               <DataTable
                 title="Your website list"
@@ -53,10 +56,6 @@ export default class Dashboard extends Component {
                 sortIcon={<SortIcon />}
               />
             </Card>
-            <br></br>
-            <form action="/newWebsite">
-                <button >Add new website</button>
-            </form>
             </div>
             
         );

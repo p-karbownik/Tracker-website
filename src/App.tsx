@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import LoginComponent from "./login.component"
 import RegisterComponent from "./register.component"
-import DashboardComponent from "./website-dashboard.component"
-import Dashboard from "./dashboard.component"
+import Dashboard from "./website-dashboard.component"
+import MainPage from "./main-page.component"
 import NewWebsite from "./new-website.component"
 
 
@@ -16,9 +16,9 @@ function App() {
             <Route exact path='/' component={LoginComponent} />
             <Route path="/register" component={RegisterComponent} />
             <Route path="/login" component={LoginComponent} />
-            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/mainPage" component={MainPage} />
             <Route path="/newWebsite" component={NewWebsite} />
-            <Route path="/websitePage" component={NewWebsite} />
+            <Route path="/dashboard" component={Dashboard} />
           </Switch>
         </div>
       </div>

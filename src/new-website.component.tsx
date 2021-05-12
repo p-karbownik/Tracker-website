@@ -3,7 +3,7 @@ import { Component } from "react";
 export default class NewWebsiteComponent extends Component {
     render() {
         return (
-            <form className = "formClass" action = "/new-website">
+            <form className = "formClass" action = "/mainPage">
                 <h3>New website</h3>
                 <div className="form-group">
                     <label>Website name</label>
