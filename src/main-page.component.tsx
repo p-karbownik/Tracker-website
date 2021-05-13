@@ -6,6 +6,7 @@ import { Component } from "react";
 import { Link } from "react-router-dom";
 import websites from './website';
 import './main-page.component.css'
+import { Button } from "@material-ui/core";
 
 const columns = [
     {
@@ -43,11 +44,11 @@ export default class MainPage extends Component {
     render() {
         return (
             <div className = "table">
-            <form action="/newWebsite">
-                <button className = "websiteButton">Add new website</button>
-            </form>
             <br></br>
             <Card>
+              <div className="websiteButton">
+                <Link to="./newWebsite"><Button>Add new website</Button> </Link>
+              </div> 
               <DataTable
                 title="Your website list"
                 columns={columns}
