@@ -107,7 +107,6 @@ export default class RegisterComponent extends Component {
     };
 
     handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        // let passwordData: PasswordData = saltHashPassword(event.target.value);
         this.dispatch({
             type: 'setPassword',
             payload: event.target.value
@@ -115,7 +114,6 @@ export default class RegisterComponent extends Component {
     };
 
     handleConfirmPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        // let passwordData: PasswordData = sha512(event.target.value, this.state.salt);
         this.dispatch({
             type: 'setConfirmPassword',
             payload: event.target.value
@@ -142,7 +140,7 @@ export default class RegisterComponent extends Component {
                                     password: passwordData.passwordHash, 
                                     salt: passwordData.salt})
         }
-        // const response = await fetch();
+        // const response = fetch();
         const response = {ok: true}
         if (response.ok) {
             this.dispatch({

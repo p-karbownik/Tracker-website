@@ -91,13 +91,13 @@ export default class LoginComponent extends Component {
         });
     };
 
-    handleLogin = async (event: React.FormEvent) => {
+    handleLogin = (event: React.FormEvent) => {
         const usernameRequestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({login: this.state.login})
         }
-        // const response = await fetch();
+        // const response = fetch();
         const username_response = {ok: true, data: {id: 1234, salt: "abcd1234"}};
         if (!username_response.ok) {
             this.dispatch({
