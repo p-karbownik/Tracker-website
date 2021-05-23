@@ -1,9 +1,9 @@
-import './index.css';
+import './form.css';
 import { Component } from "react";
 export default class RegisterComponent extends Component {
     render() {
         return (
-            <form action = "/login">
+            <form className = "formClass" action = "/login">
                 <h3>Register</h3>
                 <div className="form-group">
                     <label>Name</label>

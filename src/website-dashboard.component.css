@@ -1,0 +1,16 @@
+
+  .dashboard {
+    padding: 150px 150px 150px 150px;
+    border-radius: 15px;
+    margin-left: 150px;
+    margin-top: 55px;
+    margin-right: 150px;
+    border: 2px solid rgb(228, 224, 224);
+    background: #bdd3b6;
+  }
+
+  button {
+    background: transparent;
+    border: 0;
+  }
+  

@@ -1,4 +1,4 @@
-import './index.css';
+import './form.css';
 import './login.component.css'
 import { Link } from "react-router-dom";
 import { Component } from "react";
@@ -6,7 +6,7 @@ import { Component } from "react";
 export default class LoginComponent extends Component {
     render() {
         return (
-            <form action = "dashboard">
+            <form className = "formClass" action = "/mainPage">
                 <h3>Log in</h3>
                 <div className="form-group">
                     <label>Email</label>
