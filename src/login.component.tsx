@@ -1,11 +1,8 @@
 import './form.css';
 import './login.component.css'
-import {saltHashPassword, PasswordData, sha512} from "./password_handling"
-import { Link, Redirect } from "react-router-dom";
+import {PasswordData, sha512} from "./password_handling"
+import { Link } from "react-router-dom";
 import React, { Component, useReducer} from "react";
-import { truncateSync } from 'fs';
-import { TextInputSubmitEditingEventData } from 'react-native';
-import { StarRateOutlined } from '@material-ui/icons';
 
 
 type State = {
@@ -98,7 +95,7 @@ export default class LoginComponent extends Component {
             body: JSON.stringify({login: this.state.login})
         }
         // const response = fetch();
-        const username_response = {ok: true, data: {id: 1234, salt: "abcd1234"}};
+        const username_response = {ok: true, data: {id: "1234", salt: "abcd1234"}};
         if (!username_response.ok) {
             this.dispatch({
                 type: 'loginFailed',
@@ -116,20 +113,20 @@ export default class LoginComponent extends Component {
             body: JSON.stringify({id: username_response.data.id, password: passwordData.passwordHash})
         }
 
-        const passwordResponse = {ok: false}
+        const passwordResponse = {ok: true}
 
-        if (passwordResponse.ok) {
-            this.dispatch({
-                type: 'loginSuccess',
-                payload: ''
-            })
-        } else {
+        if (!passwordResponse.ok) {
+            event.preventDefault();
             this.dispatch({
                 type: 'loginFailed',
                 payload: 'Incorrect password'
             })
-            event.preventDefault();
-        }     
+        }    
+        this.dispatch({
+            type: 'loginSuccess',
+            payload: ''
+        })
+        localStorage.setItem('user', username_response.data.id);
     };
 
 

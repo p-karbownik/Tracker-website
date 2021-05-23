@@ -1,7 +1,6 @@
 import './form.css';
 import React, { Component } from "react";
 import {PasswordData, saltHashPassword, sha512} from "./password_handling"
-import { List, ListItem } from '@material-ui/core';
 
 
 type State = {
