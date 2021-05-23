@@ -5,6 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import React, { Component, useReducer} from "react";
 import { truncateSync } from 'fs';
 import { TextInputSubmitEditingEventData } from 'react-native';
+import { StarRateOutlined } from '@material-ui/icons';
 
 
 type State = {
@@ -73,7 +74,7 @@ export default class LoginComponent extends Component {
     state = initialState;
 
     dispatch(action: Action) {
-        this.setState(state => reducer(initialState, action));
+        this.setState(state => reducer(this.state, action));
     }
 
     handleLoginInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,10 +99,10 @@ export default class LoginComponent extends Component {
         }
         // const response = await fetch();
         const username_response = {ok: true, data: {id: 1234, salt: "abcd1234"}};
-        if (username_response.ok === false) {
+        if (!username_response.ok) {
             this.dispatch({
                 type: 'loginFailed',
-                payload: 'Invalid username'
+                payload: 'Incorrect username'
             })
             event.preventDefault();
             return;

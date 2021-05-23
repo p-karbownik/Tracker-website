@@ -24,7 +24,7 @@ export type PasswordData = {
  * @param {string} password - List of required fields.
  * @param {string} salt - Data to be validated.
  */
-var sha512 = function(password : string, salt : string) : PasswordData {
+export function sha512(password : string, salt : string) : PasswordData {
     var hash = createHmac('sha512', salt); /** Hashing algorithm sha512 */
     hash.update(password);
     var value = hash.digest('hex');
