@@ -1,6 +1,6 @@
 import './form.css';
 import './login.component.css'
-import {saltHashPassword, PasswordData} from "./password_handling"
+import {saltHashPassword, PasswordData, sha512} from "./password_handling"
 import { Link, Redirect } from "react-router-dom";
 import React, { Component, useReducer} from "react";
 import { truncateSync } from 'fs';
@@ -10,7 +10,6 @@ import { TextInputSubmitEditingEventData } from 'react-native';
 type State = {
     login: string;
     password: string;
-    salt: string;
     error?: string;
     success: boolean;
 };
@@ -18,19 +17,19 @@ type State = {
 let initialState: State = {
     login: '',
     password: '',
-    salt: '',
     error: '',
     success: false
 }
 
 type User = {
+    id: string;
     login: string;
     password: string;
     salt: string;
 }
 
 type Action = { type: 'setLogin', payload: string }
-  | { type: 'setPassword', payload: PasswordData}
+  | { type: 'setPassword', payload: string}
   | { type: 'loginSuccess', payload: string }
   | { type: 'loginFailed', payload: string }
   | { type: 'setError', payload: string }; 
@@ -46,8 +45,7 @@ type Action = { type: 'setLogin', payload: string }
       case 'setPassword': 
         return {
           ...state,
-          password: action.payload.passwordHash,
-          salt: action.payload.salt,
+          password: action.payload,
           error: ''
         };
       case 'loginSuccess':    
@@ -86,22 +84,40 @@ export default class LoginComponent extends Component {
     };
 
     handlePasswordInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let passwordData: PasswordData = saltHashPassword(event.target.value);
         this.dispatch({
             type: 'setPassword',
-            payload: passwordData
-          });
+            payload: event.target.value
+        });
     };
 
     handleLogin = async (event: React.FormEvent) => {
-        const requestOptions = {
+        const usernameRequestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({login: this.state.login, password: this.state.password, salt: this.state.salt})
+            body: JSON.stringify({login: this.state.login})
         }
         // const response = await fetch();
-        const response = {ok: true}
-        if (response.ok) {
+        const username_response = {ok: true, data: {id: 1234, salt: "abcd1234"}};
+        if (username_response.ok === false) {
+            this.dispatch({
+                type: 'loginFailed',
+                payload: 'Invalid username'
+            })
+            event.preventDefault();
+            return;
+        } 
+
+        let passwordData: PasswordData = sha512(this.state.password, username_response.data.salt);
+
+        const passwordRequestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id: username_response.data.id, password: passwordData.passwordHash})
+        }
+
+        const passwordResponse = {ok: false}
+
+        if (passwordResponse.ok) {
             this.dispatch({
                 type: 'loginSuccess',
                 payload: ''
@@ -109,7 +125,7 @@ export default class LoginComponent extends Component {
         } else {
             this.dispatch({
                 type: 'loginFailed',
-                payload: 'Login failed'
+                payload: 'Incorrect password'
             })
             event.preventDefault();
         }     
