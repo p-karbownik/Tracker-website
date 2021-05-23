@@ -4,6 +4,7 @@ import {saltHashPassword, PasswordData} from "./password_handling"
 import { Link, Redirect } from "react-router-dom";
 import React, { Component, useReducer} from "react";
 import { truncateSync } from 'fs';
+import { TextInputSubmitEditingEventData } from 'react-native';
 
 
 type State = {
@@ -92,7 +93,7 @@ export default class LoginComponent extends Component {
           });
     };
 
-    handleLogin = async () => {
+    handleLogin = async (event: React.FormEvent) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -110,15 +111,14 @@ export default class LoginComponent extends Component {
                 type: 'loginFailed',
                 payload: 'Login failed'
             })
+            event.preventDefault();
         }     
     };
 
 
     render() {
         return (
-            <React.Fragment>
-                {(this.state.success === false) ? 
-            <form className = "formClass">
+            <form className = "formClass" action="./mainPage" onSubmit={this.handleLogin} >
                 <h3>Log in</h3>
                 
                 <div className="form-group">
@@ -151,8 +151,7 @@ export default class LoginComponent extends Component {
                 </div>
                 <div>
                 <button 
-                    type="button"
-                    onClick={this.handleLogin} 
+                    type="submit"
                     className="btn btn-dark btn-lg btn-block" >
                         Log in 
                     </button>
@@ -166,9 +165,6 @@ export default class LoginComponent extends Component {
                 </Link>
 
             </form>
-            : <Redirect to='/mainPage'/>}
-
-            </React.Fragment>
         );
     }
 }
