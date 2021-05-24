@@ -1,10 +1,9 @@
 import './form.css';
 import React, { Component } from "react";
-import {PasswordData, saltHashPassword, sha512} from "./password_handling"
+import {PasswordData, saltHashPassword} from "./password_handling"
 
 
 type State = {
-    name: string,
     login: string;
     password: string;
     confirm_password: string;
@@ -14,7 +13,6 @@ type State = {
 };
 
 let initialState: State = {
-    name: '',
     login: '',
     password: '',
     confirm_password: '',
@@ -23,16 +21,8 @@ let initialState: State = {
     success: false,
 }
 
-type User = {
-    id: string;
-    login: string;
-    password: string;
-    salt: string;
-}
-
 type Action = 
-      { type: 'setName', payload: string}
-    | { type: 'setLogin', payload: string }
+      { type: 'setLogin', payload: string }
     | { type: 'setPassword', payload: string}
     | { type: 'setConfirmPassword', payload: string}
     | { type: 'registerSuccess', payload: string }
@@ -41,12 +31,6 @@ type Action =
 
   function reducer(state: State, action: Action): State {
     switch (action.type) {
-        case 'setName': 
-            return {
-                ...state,
-                name: action.payload,
-                error: ''
-            };
         case 'setLogin': 
             return {
                 ...state,
@@ -57,7 +41,6 @@ type Action =
             return {
                 ...state,
                 password: action.payload,
-                // salt: action.payload.salt
             };
         case 'setConfirmPassword': 
             return {
@@ -91,13 +74,6 @@ export default class RegisterComponent extends Component {
         this.setState(state => reducer(this.state, action));
     }
 
-    handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.dispatch({
-            type: 'setName',
-            payload: event.target.value
-        });
-    };
-
     handleLoginInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.dispatch({
             type: 'setLogin',
@@ -119,8 +95,8 @@ export default class RegisterComponent extends Component {
         });
     }
 
-    handleRegister = (event: React.FormEvent) => {
-        if (this.state.password != this.state.confirm_password) {
+    handleRegister = async (event: React.FormEvent) => {
+        if (this.state.password !== this.state.confirm_password) {
             this.dispatch({
                 type: 'setPasswordMatch',
                 payload: false
@@ -134,13 +110,12 @@ export default class RegisterComponent extends Component {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({  name: this.state.name, 
-                                    login: this.state.login, 
+            body: JSON.stringify({  login: this.state.login, 
                                     password: passwordData.passwordHash, 
                                     salt: passwordData.salt})
         }
-        // const response = fetch();
-        const response = {ok: true}
+        const response = await fetch('https://activity-tracker-server.herokuapp.com/events/register', requestOptions);
+        
         if (response.ok) {
             this.dispatch({
                 type: 'registerSuccess',
@@ -159,16 +134,6 @@ export default class RegisterComponent extends Component {
         return (
             <form className = "formClass" action = "/" onSubmit={this.handleRegister}>
                 <h3>Register</h3>
-                <div className="form-group">
-                    <label>Name</label>
-                    <input 
-                    type="text" 
-                    id="registerName" 
-                    className="form-control" 
-                    placeholder="Enter name" 
-                    onChange={this.handleNameInput}
-                    required />
-                </div>
                 <div className="form-group">
                     <label>Email</label>
                     <input 
