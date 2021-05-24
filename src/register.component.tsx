@@ -1,10 +1,11 @@
 import './form.css';
 import React, { Component } from "react";
 import {PasswordData, saltHashPassword} from "./password_handling"
+import { Link } from 'react-router-dom';
 
 
 type State = {
-    login: string;
+    username: string;
     password: string;
     confirm_password: string;
     salt: string;
@@ -13,7 +14,7 @@ type State = {
 };
 
 let initialState: State = {
-    login: '',
+    username: '',
     password: '',
     confirm_password: '',
     salt: '',
@@ -22,7 +23,7 @@ let initialState: State = {
 }
 
 type Action = 
-      { type: 'setLogin', payload: string }
+      { type: 'setUsername', payload: string }
     | { type: 'setPassword', payload: string}
     | { type: 'setConfirmPassword', payload: string}
     | { type: 'registerSuccess', payload: string }
@@ -31,10 +32,10 @@ type Action =
 
   function reducer(state: State, action: Action): State {
     switch (action.type) {
-        case 'setLogin': 
+        case 'setUsername': 
             return {
                 ...state,
-                login: action.payload,
+                username: action.payload,
                 error: ''
             };
         case 'setPassword': 
@@ -56,7 +57,8 @@ type Action =
         case 'registerFailure':    
             return {
                 ...state,
-                success: false
+                success: false,
+                error: action.payload
             };
         case 'setPasswordMatch': 
             return {
@@ -74,9 +76,9 @@ export default class RegisterComponent extends Component {
         this.setState(state => reducer(this.state, action));
     }
 
-    handleLoginInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleUsernameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.dispatch({
-            type: 'setLogin',
+            type: 'setUsername',
             payload: event.target.value
         });
     };
@@ -95,7 +97,8 @@ export default class RegisterComponent extends Component {
         });
     }
 
-    handleRegister = async (event: React.FormEvent) => {
+    handleRegister = (event: React.FormEvent) => {
+        event.preventDefault()
         if (this.state.password !== this.state.confirm_password) {
             this.dispatch({
                 type: 'setPasswordMatch',
@@ -110,24 +113,26 @@ export default class RegisterComponent extends Component {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({  login: this.state.login, 
+            body: JSON.stringify({  username: this.state.username, 
                                     password: passwordData.passwordHash, 
                                     salt: passwordData.salt})
         }
-        const response = await fetch('https://activity-tracker-server.herokuapp.com/events/register', requestOptions);
-        
-        if (response.ok) {
-            this.dispatch({
-                type: 'registerSuccess',
-                payload: ''
+        const response = fetch('http://localhost:8080/users/register', requestOptions)
+            .then(res => {
+                if(!res.ok) {
+                    this.dispatch({
+                        type: 'registerFailure',
+                        payload: 'A user with this email already exists'
+                    })
+                    return Promise.reject('error code: ' + res.status);
+                } else {
+                    this.dispatch({
+                        type: 'registerSuccess',
+                        payload: ''
+                    })
+                    return res.json()
+                }
             })
-        } else {
-            this.dispatch({
-                type: 'registerFailure',
-                payload: 'Registration failed'
-            })
-            event.preventDefault()
-        }
     }
 
     render() {
@@ -141,7 +146,7 @@ export default class RegisterComponent extends Component {
                     id="registerEmail" 
                     className="form-control" 
                     placeholder="Enter surname" 
-                    onChange={this.handleLoginInput}
+                    onChange={this.handleUsernameInput}
                     required />
                 </div>
                 <div className="form-group">
@@ -174,6 +179,15 @@ export default class RegisterComponent extends Component {
                 className="btn btn-dark btn-lg btn-block" >
                     Register 
                 </button>
+                <div>
+                <hr/>
+                <text style={{color: 'green'}}>
+                    {this.state.success  ? "Registration success. Return to login page" : ""}
+                </text>
+                </div>
+                <div>
+                    <Link to="./login"> <button className="btn btn-dark btn-lg btn-block" >Return</button> </Link>
+                </div>
             </form>
 
         );

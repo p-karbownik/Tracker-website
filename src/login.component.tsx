@@ -95,7 +95,7 @@ export default class LoginComponent extends Component {
             body: JSON.stringify({login: this.state.login})
         }
         // const response = fetch();
-        const username_response = {ok: true, data: {id: "1234", salt: "abcd1234"}};
+        const username_response = {ok: true, data: {id: "1", salt: "abcd1234"}};
         if (!username_response.ok) {
             this.dispatch({
                 type: 'loginFailed',
