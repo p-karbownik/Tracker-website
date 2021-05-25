@@ -11,6 +11,7 @@
     "@types/node": "^12.20.5",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.2",
+    "bcrypt": "^5.0.1",
     "bootstrap": "^4.6.0",
     "chart.js": "^3.2.1",
     "react": "^17.0.1",
@@ -59,6 +60,10 @@
     "registry": "http://nexus:8081/repository/npm-private/"
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.7"
+    "@types/bcrypt": "^5.0.0",
+    "@types/react-native": "^0.64.5",
+    "@types/react-router-dom": "^5.1.7",
+    "express": "^4.17.1",
+    "react-native": "^0.64.1"
   }
 }
