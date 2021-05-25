@@ -1,7 +1,7 @@
 import './form.css';
 import './login.component.css'
 import {PasswordData, sha512} from "./password_handling"
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory, withRouter } from "react-router-dom";
 import React, { Component, useReducer} from "react";
 
 
@@ -89,52 +89,64 @@ export default class LoginComponent extends Component {
     };
 
     handleLogin = (event: React.FormEvent) => {
+        event.preventDefault();
         const usernameRequestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({login: this.state.login})
+            method: 'GET',
+            // headers: { 'Content-Type': 'application/json' },
+            // body: JSON.stringify({username: this.state.login})
         }
-        // const response = fetch();
-        const username_response = {ok: true, data: {id: "1", salt: "abcd1234"}};
-        if (!username_response.ok) {
-            this.dispatch({
-                type: 'loginFailed',
-                payload: 'Incorrect username'
+        fetch('http://localhost:8080/users/login/' + this.state.login, usernameRequestOptions)
+            .then(username_response => {
+                event.preventDefault();
+                if (!username_response.ok) {
+                    this.dispatch({
+                        type: 'loginFailed',
+                        payload: 'Incorrect username'
+                    })
+                    return Promise.reject('error code: ' + username_response.status);
+
+                } else return username_response.text();
             })
-            event.preventDefault();
-            return;
-        } 
+            .then(salt => {
+                let passwordData: PasswordData = sha512(this.state.password, salt);
 
-        let passwordData: PasswordData = sha512(this.state.password, username_response.data.salt);
+                const passwordRequestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({username: this.state.login, password: passwordData.passwordHash})
+                }
+                
+                fetch('http://localhost:8080/users/login', passwordRequestOptions)
+                    .then(password_response => {
+                        if (!password_response.ok) {
+                            event.preventDefault();
+                            this.dispatch({
+                                type: 'loginFailed',
+                                payload: 'Incorrect password'
+                            })
+                            return Promise.reject('error code: ' + password_response.status)
 
-        const passwordRequestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({id: username_response.data.id, password: passwordData.passwordHash})
-        }
-
-        const passwordResponse = {ok: true}
-
-        if (!passwordResponse.ok) {
-            event.preventDefault();
-            this.dispatch({
-                type: 'loginFailed',
-                payload: 'Incorrect password'
-            })
-        }    
-        this.dispatch({
-            type: 'loginSuccess',
-            payload: ''
-        })
-        localStorage.setItem('user', username_response.data.id);
+                        }  else return password_response.json();
+                    })
+                    .then (user_id => {
+                        this.dispatch({
+                            type: 'loginSuccess',
+                            payload: ''
+                        })
+                        localStorage.setItem('user', user_id);
+                    })
+            })  
     };
-
 
     render() {
         return (
-            <form className = "formClass" action="./mainPage" onSubmit={this.handleLogin} >
+            <React.Fragment>
+            {this.state.success ? 
+                <Redirect to='/mainPage' /> :
+
+                <form className = "formClass" action="./mainPage" onSubmit={this.handleLogin} >
                 <h3>Log in</h3>
-                
+
                 <div className="form-group">
                     <label>Email</label>
 
@@ -165,7 +177,8 @@ export default class LoginComponent extends Component {
                 </div>
                 <div>
                 <button 
-                    type="submit"
+                    type="button"
+                    onClick={this.handleLogin}
                     className="btn btn-dark btn-lg btn-block" >
                         Log in 
                     </button>
@@ -178,7 +191,10 @@ export default class LoginComponent extends Component {
                     Register
                 </Link>
 
-            </form>
+                </form>
+}
+            </React.Fragment>
+            
         );
     }
 }

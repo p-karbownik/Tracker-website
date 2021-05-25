@@ -145,7 +145,7 @@ export default class RegisterComponent extends Component {
                     type="email" 
                     id="registerEmail" 
                     className="form-control" 
-                    placeholder="Enter surname" 
+                    placeholder="Enter email" 
                     onChange={this.handleUsernameInput}
                     required />
                 </div>
