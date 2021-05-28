@@ -1,4 +1,4 @@
-export default [
+const websites = [
     {
       id: 1,
       name: "Beetlejuice",
@@ -105,3 +105,5 @@ export default [
       lastEventDate:  "12-04-2021"
     }
 ];
+
+export default websites;

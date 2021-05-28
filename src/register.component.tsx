@@ -117,7 +117,7 @@ export default class RegisterComponent extends Component {
                                     password: passwordData.passwordHash, 
                                     salt: passwordData.salt})
         }
-        const response = fetch('http://localhost:8080/users/register', requestOptions)
+        fetch('http://localhost:8080/users/register', requestOptions)
             .then(res => {
                 if(!res.ok) {
                     this.dispatch({

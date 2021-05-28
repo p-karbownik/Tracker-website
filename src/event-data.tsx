@@ -1,4 +1,4 @@
-export default [
+const EventData = [
     {
         labels: [ -5, -4, -3, -2, -1, 0],
         datasets: [
@@ -73,3 +73,6 @@ export default [
     },
     
 ];
+
+
+export default EventData;

@@ -1,8 +1,8 @@
 import './form.css';
 import './login.component.css'
 import {PasswordData, sha512} from "./password_handling"
-import { Link, Redirect, useHistory, withRouter } from "react-router-dom";
-import React, { Component, useReducer} from "react";
+import { Link, Redirect } from "react-router-dom";
+import React, { Component } from "react";
 
 
 type State = {
@@ -17,13 +17,6 @@ let initialState: State = {
     password: '',
     error: '',
     success: false
-}
-
-type User = {
-    id: string;
-    login: string;
-    password: string;
-    salt: string;
 }
 
 type Action = { type: 'setLogin', payload: string }

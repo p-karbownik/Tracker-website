@@ -99,7 +99,7 @@ export default class NewWebsiteComponent extends Component {
                 else return res.json()
             })
             .then(response => {
-                this.state.token = response.token;
+                this.setState({token: response.token});
                 this.setState({buttonPopup: true});
             })
         
