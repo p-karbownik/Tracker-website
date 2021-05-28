@@ -1,7 +1,7 @@
 import './form.css';
 import React, { Component } from "react";
 import {PasswordData, saltHashPassword} from "./password_handling"
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 
 type State = {
@@ -170,9 +170,9 @@ export default class RegisterComponent extends Component {
                     required />
                 </div>
                 <div className="form-group">
-                    <text style={{color: 'red'}}>
+                    <label style={{color: 'red'}}>
                         {this.state.error}
-                    </text>
+                    </label>
                 </div>
                 <button 
                 type="submit" 
@@ -181,15 +181,16 @@ export default class RegisterComponent extends Component {
                 </button>
                 <div>
                 <hr/>
-                <text style={{color: 'green'}}>
+                <label style={{color: 'green'}}>
                     {this.state.success  ? "Registration success. Return to login page" : ""}
-                </text>
+                </label>
                 </div>
                 <div>
-                    <Link to="./login"> <button className="btn btn-dark btn-lg btn-block" >Return</button> </Link>
+                    <Router>
+                        <Link to="./login"> <button className="btn btn-dark btn-lg btn-block" >Return</button> </Link>
+                    </Router>
                 </div>
             </form>
-
         );
     }
 }
