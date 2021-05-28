@@ -1,7 +1,7 @@
 import './form.css';
 import React, { Component } from "react";
 import {PasswordData, saltHashPassword} from "./password_handling"
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 type State = {
@@ -186,9 +186,7 @@ export default class RegisterComponent extends Component {
                 </label>
                 </div>
                 <div>
-                    <Router>
-                        <Link to="./login"> <button className="btn btn-dark btn-lg btn-block" >Return</button> </Link>
-                    </Router>
+                    <Link to="./login"> <button className="btn btn-dark btn-lg btn-block" >Return</button> </Link>
                 </div>
             </form>
         );
