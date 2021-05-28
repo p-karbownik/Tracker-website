@@ -1,7 +1,7 @@
 import './form.css';
 import './login.component.css'
 import {PasswordData, sha512} from "./password_handling"
-import { Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 
 
@@ -84,9 +84,7 @@ export default class LoginComponent extends Component {
     handleLogin = (event: React.FormEvent) => {
         event.preventDefault();
         const usernameRequestOptions = {
-            method: 'GET',
-            // headers: { 'Content-Type': 'application/json' },
-            // body: JSON.stringify({username: this.state.login})
+            method: 'GET'
         }
         fetch('http://localhost:8080/users/login/' + this.state.login, usernameRequestOptions)
             .then(username_response => {
@@ -137,6 +135,7 @@ export default class LoginComponent extends Component {
             {this.state.success ? 
                 <Redirect to='/mainPage' /> :
 
+                <Router>
                 <form className = "formClass" action="./mainPage" onSubmit={this.handleLogin} >
                 <h3>Log in</h3>
 
@@ -164,9 +163,9 @@ export default class LoginComponent extends Component {
 
                 </div>
                 <div className="form-group">
-                    <text style={{color: 'red'}}>
+                    <label style={{color: 'red'}}>
                         {this.state.error}
-                    </text>
+                    </label>
                 </div>
                 <div>
                 <button 
@@ -177,7 +176,7 @@ export default class LoginComponent extends Component {
                     </button>
                 </div>
                     
-                <h4><br /> <text>or</text></h4>
+                <h4><br /> <label>or</label></h4>
 
                 <Link to="/register" 
                 className="btn btn-dark btn-lg btn-block" >
@@ -185,6 +184,7 @@ export default class LoginComponent extends Component {
                 </Link>
 
                 </form>
+                </Router>
 }
             </React.Fragment>
             
