@@ -1,7 +1,7 @@
 import './form.css';
 import './login.component.css'
 import {PasswordData, sha512} from "./password_handling"
-import { BrowserRouter as Router, Link, Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 
 
@@ -135,7 +135,6 @@ export default class LoginComponent extends Component {
             {this.state.success ? 
                 <Redirect to='/mainPage' /> :
 
-                <Router>
                 <form className = "formClass" action="./mainPage" onSubmit={this.handleLogin} >
                 <h3>Log in</h3>
 
@@ -184,7 +183,6 @@ export default class LoginComponent extends Component {
                 </Link>
 
                 </form>
-                </Router>
 }
             </React.Fragment>
             
