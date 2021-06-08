@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/node-fetch": "^2.5.10",
     "@types/react-native": "^0.64.5",
     "@types/react-router-dom": "^5.1.7",
     "express": "^4.17.1",
