@@ -4,9 +4,10 @@ import SortIcon from "@material-ui/icons/ArrowDownward";
 import { Component } from "react";
 
 import { Link } from "react-router-dom";
-import websites from './website';
 import './main-page.component.css'
 import { Button } from "@material-ui/core";
+import {sendEvent} from "./Event"
+import {setEventTrackingEnabled} from "./Tracker"
 
 const columns = [
   {
@@ -55,12 +56,14 @@ type WebsiteData = {
 
 export default class MainPage extends Component {
   state = initialState;
- 
+
   componentDidMount() {
+    setEventTrackingEnabled();
     fetch('http://localhost:8080/user/'+ localStorage.getItem("user"))
       .then(response => response.json())
       .then(data => {
         this.setState({ websiteData: data });
+        sendEvent('d97395ce-cd43-4235-b5c5-4d8e3689287c', this.state.websiteData[0].mostPopularEventName ,'loadMainPage');
         
       });
   }
