@@ -14,7 +14,7 @@ function App() {
       <div className="outer">
         <div className="inner">
           <Switch>
-            <Route exact path='/' component={Dashboard} />
+            <Route exact path='/' component={LoginComponent} />
             <Route path="/register" component={RegisterComponent} />
             <Route path="/login" component={LoginComponent} />
             <Redirect from='/login' to="/mainPage" />

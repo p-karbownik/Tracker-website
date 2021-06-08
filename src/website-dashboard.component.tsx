@@ -171,7 +171,6 @@ export default class Dashboard extends Component {
                     </Grid>
                 </div> 
                 <div>
-                    <p> {this.state.isFetching ? 'Fetching data...' : ''} </p>
                     <Grid container justify="space-evenly" direction="row" alignItems="stretch">
                         <Grid item> 
                             <Grid container spacing={1} direction="column">
@@ -222,8 +221,16 @@ export default class Dashboard extends Component {
                                 
                                 
                             </ButtonGroup>
+                            
                         </Grid>
-                        <Grid item> <Card> < Line type="line" data={this.state.eventData} /> </Card> </Grid>
+                        <Grid item>
+                            <Grid container spacing={1} direction="column">
+                                <Grid item> <Card> < Line type="line" data={this.state.eventData} /> </Card> </Grid>
+                                <p> {this.state.isFetching ? 'Fetching data...' : ''} </p>
+                            </Grid>
+                        </Grid>
+                        
+                        
                     </Grid>
                 </div> 
             </div>
