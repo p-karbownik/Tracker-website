@@ -32,8 +32,8 @@ const columns = [
   },
   {
     name: "",
-    selector: "id",
-    cell: (row: any) => <Link onClick={(e) => {localStorage.setItem("token", row.websiteId)}} to="/dashboard" >See more</Link>
+    selector: "token",
+    cell: (row: any) => <Link onClick={(e) => {localStorage.setItem("token", row.token)}} to="/dashboard" >See more</Link>
 
   }
 
