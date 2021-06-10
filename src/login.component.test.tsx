@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import App from './login.component';
 import { Button } from '@material-ui/core';
 import LoginComponent from './login.component';
+import { Router } from 'react-router-dom';
 
 let container: HTMLDivElement;
 beforeEach(() => {
@@ -37,3 +38,4 @@ test('renders Log in button', () => {
     expect(linkElement[i]).toBeInTheDocument();
   }
 });
+

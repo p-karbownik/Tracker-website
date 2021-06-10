@@ -7,17 +7,14 @@ import { Line } from "react-chartjs-2"
 import Card from "@material-ui/core/Card"
 import Grid from "@material-ui/core/Grid"
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import Mock  from './event-data'
 import Button from '@material-ui/core/Button/Button';
-import { ButtonGroup, FormControl, FormHelperText, InputLabel, MenuItem } from '@material-ui/core';
+import { ButtonGroup, FormControl, FormHelperText, MenuItem } from '@material-ui/core';
 import { Select } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns'
 import {
     MuiPickersUtilsProvider,
-    KeyboardDatePicker,
     DateTimePicker
   } from '@material-ui/pickers';
-import { dateTimePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
 
 class ResizeObserver {
     observe() {}
@@ -25,12 +22,14 @@ class ResizeObserver {
     disconnect() {}
 }
 
-type Dataset = {
-    label: string;
-    data: number[];
+function appendLeadingZeroes(n: number){
+    if(n <= 9){
+      return "0" + n;
+    }
+    return n
 }
 
-type FilledInDataset = {
+type Dataset = {
     label: string;
     data: number[];
     fill: boolean;
@@ -41,26 +40,6 @@ type FilledInDataset = {
 type EventData = {
     labels: number[];
     datasets: Dataset[];
-}
-
-type FilledInEventData = {
-    labels: number[];
-    datasets: FilledInDataset[];  
-}
-
-function fillInEventData(eventData: EventData) : FilledInEventData {
-    return {
-        labels: eventData.labels,
-        datasets: eventData.datasets.map(
-            (dataset: Dataset) => ({
-                label: dataset.label,
-                data: dataset.data,
-                fill: true,
-                backgroundColor: "rgba(168, 115, 115, 0.2)",
-                borderColor: "rgba(168, 115, 115, 1)"
-            })
-        )
-    }
 }
 
 type State = {
@@ -81,6 +60,9 @@ let initialState: State = {
         {
             label: "",
             data: [],
+            fill: true,
+            backgroundColor: "rgba(168, 115, 115, 0.2)",
+            borderColor: "rgba(168, 115, 115, 1)"
         }
         ]
     },
@@ -103,34 +85,71 @@ export default class Dashboard extends Component {
     fetchData = (eventName: string) => {
         this.setState({...this.state, isFetching: true});
 
-        let statisticsPerDay = (this.state.dataGrouping == "Days" ? true : false);
-        fetch('http://localhost:8080/getStatistics/' 
-        + this.state.token + '/' 
-        + eventName + '/' 
-        + statisticsPerDay + '/'
-        + this.state.dateFrom.toISOString() + '/'
-        + this.state.dateTo.toISOString()
-        , {method: 'GET'})
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                webToken: this.state.token, 
+                eventName: eventName,
+                dateFrom: this.state.dateFrom.toISOString(),
+                dateTo: this.state.dateTo.toISOString()
+            })
+        }
 
-            .then(response => response.json())
-            .then(result => {
-                this.setState({...this.state, eventData: fillInEventData(result), isFetching: false})
-            })
-            .catch(e => {
-                console.log(e);
-                this.setState({...this.state, isFetching: false})
-            })
+        if (this.state.dataGrouping === "Days") {
+            fetch('http://localhost:8080/events/getStatisticsPerHour/', requestOptions)
+
+                .then(response => response.json())
+                .then(result => {
+                    this.setState({...this.state, 
+                        eventData: {
+                            labels: result.labels, 
+                            datasets: [{
+                                ...this.state.eventData.datasets[0], 
+                                label: result.eventName, 
+                                data: result.amountOfEvents}]
+                            }, 
+                            isFetching: false
+                        })
+                })
+                .catch(e => {
+                    console.log(e);
+                    this.setState({...this.state, isFetching: false})
+                })
+        } else {
+            fetch('http://localhost:8080/events/getStatisticsPerDay/', requestOptions)
+    
+                .then(response => response.json())
+                .then(result => {
+                    this.setState({...this.state, 
+                        eventData: {
+                            labels: result.labels, 
+                            datasets: [{
+                                ...this.state.eventData.datasets, 
+                                label: result.eventName, 
+                                data: result.amountOfEvents}]
+                            }, 
+                            isFetching: false
+                        })
+                })
+                .catch(e => {
+                    console.log(e);
+                    this.setState({...this.state, isFetching: false})
+                })
+            }
 
     }
 
     fetchEventList = () => {
         this.setState({...this.state, isFetching: true});
 
-        //TODO adres
-        fetch('http://localhost:8080/', {method: 'GET'})
+        const requestOptions = {
+            method: 'GET'
+        }
+        fetch('http://localhost:8080/events/getEventsNames/' + this.state.token, requestOptions)
             .then(response => response.json())
             .then(result => {
-                this.setState({...this.state, eventData: fillInEventData(result), isFetching: false})
+                this.setState({...this.state, eventNameList: result, isFetching: false})
             })
             .catch(e => {
                 console.log(e);
@@ -140,7 +159,6 @@ export default class Dashboard extends Component {
 
     componentDidMount() {
         this.fetchEventList();
-        // this.setState({...this.state, eventData: fillInEventData(Mock)})
     }
 
     handleDataGroupingChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -154,7 +172,6 @@ export default class Dashboard extends Component {
     handleDateToChange = (date: Date | null) => {
         this.setState({...this.state, dateTo: date});
     }
-
 
     render() {
         window.ResizeObserver = ResizeObserver;
@@ -190,15 +207,15 @@ export default class Dashboard extends Component {
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <DateTimePicker
                                         margin="normal"
-                                        id="date-picker-dialog"
-                                        label="Date picker dialog"
+                                        id="date-to"
+                                        label="Date from"
                                         format="dd-MM-yyyy hh:mm"
                                         value={this.state.dateFrom}
                                         onChange={this.handleDateFromChange}
                                     />
                                     <DateTimePicker
                                         margin="normal"
-                                        id="dateto-picker-dialog"
+                                        id="dateto-from"
                                         label="Date to"
                                         format="dd-MM-yyyy hh:mm"
                                         value={this.state.dateTo}
