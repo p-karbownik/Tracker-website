@@ -96,7 +96,7 @@ export default class Dashboard extends Component {
             })
         }
 
-        if (this.state.dataGrouping === "Days") {
+        if (this.state.dataGrouping === "Hours") {
             fetch('http://localhost:8080/events/getStatisticsPerHour/', requestOptions)
 
                 .then(response => response.json())
@@ -125,7 +125,7 @@ export default class Dashboard extends Component {
                         eventData: {
                             labels: result.labels, 
                             datasets: [{
-                                ...this.state.eventData.datasets, 
+                                ...this.state.eventData.datasets[0], 
                                 label: result.eventName, 
                                 data: result.amountOfEvents}]
                             }, 
