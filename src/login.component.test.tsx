@@ -20,19 +20,19 @@ afterEach(() => {
 });
 
 test('renders Register button', () => {
-  render(<LoginComponent />);
+  render(<App />);
   const linkElement = screen.getByText(/Register/i);
   expect(linkElement).toBeInTheDocument();
 });
 
 test('renders username label', () => {
-  render(<LoginComponent />);
+  render(<App />);
   const linkElement = screen.getByText(/Email/i);
   expect(linkElement).toBeInTheDocument();
 });
 
 test('renders Log in button', () => {
-  render(<LoginComponent />);
+  render(<App />);
   const linkElement = screen.getAllByText(/Log in/i);
   for (let i = 0; i < linkElement.length; i++) {
     expect(linkElement[i]).toBeInTheDocument();

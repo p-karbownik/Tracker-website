@@ -1,6 +1,6 @@
 import React from 'react';
 import { unmountComponentAtNode } from "react-dom";
-import { render, screen } from '@testing-library/react';
+import { fireEvent, getByAltText, getByText, render, screen } from '@testing-library/react';
 import App from './login.component';
 import { Button } from '@material-ui/core';
 import RegisterComponent from './register.component';
@@ -18,9 +18,16 @@ afterEach(() => {
   container.remove();
 });
 
+test('redirects to register', () => {
+  render(<App />);
+  fireEvent.click(screen.getByText(/Register/i));
+  expect(screen.getAllByText(/Register/i)).toBeInTheDocument();
+});
+
 
 test('renders Register button', () => {
-  render(<RegisterComponent />);
+  render(<App />);
+  fireEvent.click(screen.getByText(/Register/i));
   const linkElement = screen.getAllByText(/Register/i);
   for (let i = 0; i < linkElement.length; i++) {
     expect(linkElement[i]).toBeInTheDocument();
@@ -28,19 +35,22 @@ test('renders Register button', () => {
 });
 
 test('renders username label', () => {
-  render(<RegisterComponent />);
+  render(<App />);
+  fireEvent.click(screen.getByText(/Register/i));
   const linkElement = screen.getByText(/Email/i);
   expect(linkElement).toBeInTheDocument();
 });
 
 test('renders password confirmation label', () => {
-    render(<RegisterComponent />);
+    render(<App />);
+    fireEvent.click(screen.getByText(/Register/i));
     const linkElement = screen.getByText(/Confirm password/i);
     expect(linkElement).toBeInTheDocument();
   });
 
 test('renders link', () => {
-    render(<RegisterComponent/>);
+    render(<App/>);
+    fireEvent.click(screen.getByText(/Register/i));
     const button = screen.getAllByRole(/button/i);
     for (let i = 0; i < button.length; i++) {
         expect(button[i]).toBeInTheDocument();
