@@ -1,12 +1,13 @@
 import DataTable from "react-data-table-component";
 import Card from "@material-ui/core/Card";
 import SortIcon from "@material-ui/icons/ArrowDownward";
-import { Component } from "react";
+import { Component, Fragment } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import websites from './website';
 import './main-page.component.css'
 import { Button } from "@material-ui/core";
+import { isEmptyBindingPattern } from "typescript";
 
 const columns = [
   {
@@ -53,6 +54,7 @@ type WebsiteData = {
   id: string;
 }
 
+
 export default class MainPage extends Component {
   state = initialState;
  
@@ -64,14 +66,22 @@ export default class MainPage extends Component {
         
       });
   }
+    
+    handleLogout = (event: any) => {
+    localStorage.removeItem('user');
+  }
 
   render() {
     return (
+      <Fragment>
+            {localStorage.getItem('user') == null ? 
+                <Redirect to='/' /> :
       <div className="table">
         <br></br>
         <Card>
           <div className="websiteButton">
             <Link to="./newWebsite"><Button>Add new website</Button> </Link>
+            <Link to="./"><Button onClick={this.handleLogout}>Log out</Button> </Link>
           </div>
           <DataTable
             title="Your website list"
@@ -82,7 +92,10 @@ export default class MainPage extends Component {
           />
         </Card>
       </div>
+      }
+     </Fragment>
 
     );
+
   }
 }
