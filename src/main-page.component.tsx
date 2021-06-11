@@ -4,7 +4,6 @@ import SortIcon from "@material-ui/icons/ArrowDownward";
 import { Component, Fragment } from "react";
 
 import { Link, Redirect } from "react-router-dom";
-import websites from './website';
 import './main-page.component.css'
 import { Button } from "@material-ui/core";
 import { isEmptyBindingPattern } from "typescript";
