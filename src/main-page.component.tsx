@@ -6,7 +6,6 @@ import { Component, Fragment } from "react";
 import { Link, Redirect } from "react-router-dom";
 import './main-page.component.css'
 import { Button } from "@material-ui/core";
-import { isEmptyBindingPattern } from "typescript";
 import {setEventTrackingEnabled} from "./Tracker"
 import {sendEvent} from "./Event"
 

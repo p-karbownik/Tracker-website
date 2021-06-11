@@ -22,13 +22,6 @@ class ResizeObserver {
     disconnect() {}
 }
 
-function appendLeadingZeroes(n: number){
-    if(n <= 9){
-      return "0" + n;
-    }
-    return n
-}
-
 type Dataset = {
     label: string;
     data: number[];
@@ -49,7 +42,6 @@ type State = {
     dataGrouping: "Days" | "Hours";
     dateFrom: Date;
     dateTo: Date;
-    token: string;
 }
 
 let initialState: State = {
@@ -69,8 +61,7 @@ let initialState: State = {
     eventNameList: [],
     dataGrouping: "Days",
     dateTo: new Date(),
-    dateFrom: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10),
-    token: localStorage.getItem("token") as string,
+    dateFrom: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10)
 }
 
 export default class Dashboard extends Component {
@@ -89,7 +80,7 @@ export default class Dashboard extends Component {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                webToken: this.state.token, 
+                webToken: localStorage.getItem("token"),
                 eventName: eventName,
                 dateFrom: this.state.dateFrom.toISOString(),
                 dateTo: this.state.dateTo.toISOString()
@@ -146,7 +137,7 @@ export default class Dashboard extends Component {
         const requestOptions = {
             method: 'GET'
         }
-        fetch('http://localhost:8080/events/getEventsNames/' + this.state.token, requestOptions)
+        fetch('http://localhost:8080/events/getEventsNames/' + localStorage.getItem("token"), requestOptions)
             .then(response => response.json())
             .then(result => {
                 this.setState({...this.state, eventNameList: result, isFetching: false})
