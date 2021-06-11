@@ -1,7 +1,8 @@
 import './form.css';
 import { Component } from "react";
 import Popup from './Popup'
-
+import { sendEvent } from "./Event"
+import {setEventTrackingEnabled} from "./Tracker"
 
 type State = {
     name: string;
@@ -65,7 +66,7 @@ function reducer(state: State, action: Action): State {
 
 export default class NewWebsiteComponent extends Component {
     state = initialState;
-    
+
     dispatch(action: Action) {
         this.setState(state => reducer(this.state, action));
     }
@@ -85,24 +86,26 @@ export default class NewWebsiteComponent extends Component {
     };
 
     handleAddWebsite(e: any) {
-        
+
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ websiteName: this.state.name, url: this.state.url, user_id: loggedUserId})
         }
-        
+
         fetch('http://localhost:8080/websites/addWebsite', requestOptions)
             .then(res => {
-                if(!res.ok) return Promise.reject('error code: ' + res.status);
+                if (!res.ok) return Promise.reject('error code: ' + res.status);
                 else return res.json()
             })
             .then(response => {
-                this.setState({token: response.token});
-                this.setState({buttonPopup: true});
+                this.setState({ token: response.token });
+                this.setState({ buttonPopup: true });
+                setEventTrackingEnabled();
+                sendEvent('d97395ce-cd43-4235-b5c5-4d8e3689287c', this.state.name, 'addNewWebsite');
             })
-        
+
     };
 
     render() {
@@ -117,7 +120,7 @@ export default class NewWebsiteComponent extends Component {
                     <label>Website address</label>
                     <input onChange={this.handleUrlInput} type="url" id="websiteURL" className="form-control" placeholder="Enter URL" required />
                 </div>
-                <button onClick={(e) => {this.handleAddWebsite(e)}}  type="submit" className="btn btn-dark btn-lg btn-block" > Add website </button>
+                <button onClick={(e) => { this.handleAddWebsite(e) }} type="submit" className="btn btn-dark btn-lg btn-block" > Add website </button>
                 <Popup trigger={this.state.buttonPopup} token={this.state.token}></Popup>
             </form>
         );

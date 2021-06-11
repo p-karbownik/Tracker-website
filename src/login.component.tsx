@@ -120,11 +120,11 @@ export default class LoginComponent extends Component {
                         }  else return password_response.json();
                     })
                     .then (user_id => {
+                        localStorage.setItem('user', user_id);
                         this.dispatch({
                             type: 'loginSuccess',
                             payload: ''
                         })
-                        localStorage.setItem('user', user_id);
                     })
             })  
     };
