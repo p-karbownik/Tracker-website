@@ -92,7 +92,6 @@ export default class NewWebsiteComponent extends Component {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ websiteName: this.state.name, url: this.state.url, user_id: loggedUserId})
-
         }
 
         fetch('http://localhost:8080/websites/addWebsite', requestOptions)
