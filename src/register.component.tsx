@@ -2,6 +2,8 @@ import './form.css';
 import React, { Component } from "react";
 import {PasswordData, saltHashPassword} from "./password_handling"
 import { Link } from 'react-router-dom';
+import { sendEvent } from "./Event"
+import {setEventTrackingEnabled} from "./Tracker"
 
 
 type State = {
@@ -119,6 +121,8 @@ export default class RegisterComponent extends Component {
         }
         fetch('http://localhost:8080/users/register', requestOptions)
             .then(res => {
+                setEventTrackingEnabled();
+                sendEvent('d97395ce-cd43-4235-b5c5-4d8e3689287c', this.state.username, 'register');
                 if(!res.ok) {
                     this.dispatch({
                         type: 'registerFailure',

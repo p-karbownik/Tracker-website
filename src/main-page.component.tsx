@@ -8,6 +8,8 @@ import websites from './website';
 import './main-page.component.css'
 import { Button } from "@material-ui/core";
 import { isEmptyBindingPattern } from "typescript";
+import {setEventTrackingEnabled} from "./Tracker"
+import {sendEvent} from "./Event"
 
 const columns = [
   {
@@ -32,8 +34,8 @@ const columns = [
   },
   {
     name: "",
-    selector: "id",
-    cell: (row: any) => <Link onClick={(e) => {localStorage.setItem("token", row.websiteId)}} to="/dashboard" >See more</Link>
+    selector: "token",
+    cell: (row: any) => <Link onClick={(e) => {localStorage.setItem("token", row.token)}} to="/dashboard" >See more</Link>
 
   }
 
@@ -57,12 +59,14 @@ type WebsiteData = {
 
 export default class MainPage extends Component {
   state = initialState;
- 
+
   componentDidMount() {
+    setEventTrackingEnabled();
     fetch('http://localhost:8080/user/'+ localStorage.getItem("user"))
       .then(response => response.json())
       .then(data => {
         this.setState({ websiteData: data });
+        sendEvent('d97395ce-cd43-4235-b5c5-4d8e3689287c', this.state.websiteData[0].mostPopularEventName ,'loadMainPage');
         
       });
   }
